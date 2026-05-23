@@ -1,8 +1,8 @@
 
 // VOID SUMMON V3 - Full clean front-only game.
 // Supabase: replace these two values with your public project URL and anon/public key only.
-const SUPABASE_URL = "";
-const SUPABASE_ANON_KEY = "";
+const SUPABASE_URL = "https://lsftxooyiddqxxllglhq.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzZnR4b295aWRkcXh4bGxnbGhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzOTc1MTgsImV4cCI6MjA5NDk3MzUxOH0.mm10ZXWAgyIV1vfcrKGssIXC_-0v9r2ZR_2MPNIoVTk";
 
 const ITEMS = window.VOID_ITEMS;
 const RARITIES = window.VOID_RARITIES;
