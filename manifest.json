@@ -1,0 +1,15 @@
+{
+  "name": "Void Summon V3",
+  "short_name": "Void Summon",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#110817",
+  "theme_color": "#ff7040",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

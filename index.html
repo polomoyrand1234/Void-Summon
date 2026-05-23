@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Void Summon V3</title>
+  <meta name="theme-color" content="#20102d" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div id="toastZone" class="toast-zone"></div>
+  <div class="app-shell">
+    <header class="hero-panel">
+      <div class="hero-copy">
+        <span class="eyebrow">Void Summon V3</span>
+        <h1>Invoque l’impossible.</h1>
+        <p>Un gacha anime original : cartes, portail dimensionnel, quêtes, succès, progression, profil et collection.</p>
+        <div class="hero-actions">
+          <button id="summonOne" class="primary-btn">x1 Invocation</button>
+          <button id="summonTen" class="secondary-btn">x10 Invocations</button>
+          <button id="ratesBtn" class="ghost-btn">Taux</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="portal-preview"><span></span><span></span><span></span></div>
+        <strong>Festival des Failles Dorées</strong>
+        <p>Palette feu, or et violet. Les cartes rares déclenchent des animations spéciales.</p>
+      </div>
+    </header>
+
+    <main>
+      <section id="page-summon" class="page active">
+        <div class="summon-layout">
+          <aside class="panel banner-panel">
+            <div class="panel-head">
+              <span class="eyebrow">Bannières</span>
+              <h2>Choisis ton portail</h2>
+            </div>
+            <div class="banner-list">
+              <button class="banner-choice active" data-category="characters"><span>🔥</span><b>Personnages</b><small>Combattants originaux</small></button>
+              <button class="banner-choice" data-category="artifacts"><span>✦</span><b>Artefacts</b><small>Reliques & pouvoirs</small></button>
+              <button class="banner-choice" data-category="cosmetics"><span>✨</span><b>Cosmétiques</b><small>Styles équipables</small></button>
+            </div>
+            <div class="pity-box">
+              <h3>Pity</h3>
+              <div id="pityRows"></div>
+            </div>
+          </aside>
+
+          <section class="panel invocation-panel">
+            <div class="panel-head row">
+              <div><span class="eyebrow">Invocation</span><h2 id="activeBannerTitle">Personnages</h2></div>
+              <button id="quickHistoryBtn" class="ghost-btn small">Historique</button>
+            </div>
+            <div class="main-portal" id="mainPortal">
+              <div class="rings"><span></span><span></span><span></span><span></span></div>
+              <div class="portal-core"></div>
+              <div class="portal-text">Clique sur une invocation</div>
+            </div>
+            <div class="summon-bottom-actions">
+              <button id="summonOne2" class="primary-btn">x1</button>
+              <button id="summonTen2" class="secondary-btn">x10</button>
+              <button id="soundToggle" class="ghost-btn">Son : ON</button>
+            </div>
+          </section>
+
+          <aside class="panel player-panel">
+            <div class="panel-head"><span class="eyebrow">Profil rapide</span><h2 id="quickName">Invocateur</h2></div>
+            <div class="avatar-card" id="quickAvatar"></div>
+            <div class="statline"><span>Niveau</span><strong id="quickLevel">1</strong></div>
+            <div class="xp-track"><div id="quickXp"></div></div>
+            <div class="statline"><span>Titre</span><strong id="quickTitle">Éveilleur débutant</strong></div>
+            <div class="statline"><span>Fragments</span><strong id="quickFragments">0</strong></div>
+            <div class="statline"><span>Meilleur drop</span><strong id="quickBest">Aucun</strong></div>
+          </aside>
+        </div>
+
+        <section class="panel compact-section">
+          <div class="panel-head row"><div><span class="eyebrow">Quêtes du jour</span><h2>Objectifs rapides</h2></div><button id="claimDailyBtn" class="secondary-btn small">Connexion du jour</button></div>
+          <div id="dailyRewards" class="daily-rewards"></div>
+          <div id="questsGrid" class="quests-grid"></div>
+        </section>
+      </section>
+
+      <section id="page-collection" class="page">
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow">Collection</span><h2>Découvre tout le catalogue</h2><p id="collectionSummary"></p></div>
+          <div id="collectionHub" class="collection-hub"></div>
+          <div id="collectionDetail" class="collection-detail hidden">
+            <div class="detail-top"><button id="collectionBack" class="ghost-btn small">← Retour</button><div><h2 id="collectionTitle"></h2><p id="collectionProgressTxt"></p></div></div>
+            <div class="mega-progress"><div id="collectionProgressBar"></div></div>
+            <div class="filters">
+              <select id="collectionRarity"><option value="all">Toutes les raretés</option></select>
+              <select id="collectionState"><option value="all">Tout</option><option value="owned">Obtenus</option><option value="missing">Non obtenus</option></select>
+              <input id="collectionSearch" type="search" placeholder="Recherche..." />
+            </div>
+            <div id="collectionGrid" class="cards-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-profile" class="page">
+        <div class="profile-grid">
+          <div class="panel profile-main"><div class="panel-head"><span class="eyebrow">Profil</span><h2>Identité d’invocateur</h2></div><div id="profileCard"></div></div>
+          <div class="panel"><div class="panel-head"><span class="eyebrow">Personnalisation</span><h2>Équipe tes éléments</h2></div><div id="customizer"></div></div>
+          <div class="panel"><div class="panel-head"><span class="eyebrow">Historique</span><h2>Derniers drops</h2></div><div id="historyList" class="history-list"></div></div>
+        </div>
+      </section>
+
+      <section id="page-achievements" class="page">
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow">Succès</span><h2>Défis permanents & secrets</h2><p>Certains succès sont cachés jusqu’au déblocage.</p></div>
+          <div id="achievementFilters" class="achievement-tabs"></div>
+          <div id="achievementsList" class="achievement-list"></div>
+        </div>
+      </section>
+
+      <section id="page-shop" class="page">
+        <div class="panel">
+          <div class="panel-head"><span class="eyebrow">Boutique</span><h2>Utilise tes fragments</h2><p>Les fragments viennent des doublons et des récompenses. Aucun achat réel.</p></div>
+          <div id="shopGrid" class="shop-grid"></div>
+        </div>
+      </section>
+
+      <section id="page-account" class="page">
+        <div class="panel account-panel">
+          <div class="panel-head"><span class="eyebrow">Compte</span><h2>Sauvegarde Supabase</h2><p>Fonctionne en local, puis se synchronise si tu ajoutes tes clés Supabase.</p></div>
+          <label>Email <input id="emailInput" type="email" placeholder="ton@email.com"></label>
+          <label>Mot de passe <input id="passwordInput" type="password" placeholder="••••••••"></label>
+          <div class="hero-actions"><button id="signUpBtn" class="secondary-btn">Créer compte</button><button id="signInBtn" class="primary-btn">Connexion</button><button id="signOutBtn" class="ghost-btn">Déconnexion</button></div>
+          <p id="accountStatus" class="help"></p>
+          <button id="resetBtn" class="danger-btn">Réinitialiser la sauvegarde locale</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-page="summon">Invocation</button>
+    <button class="nav-item" data-page="collection">Collection</button>
+    <button class="nav-item" data-page="profile">Profil</button>
+    <button class="nav-item" data-page="achievements">Succès</button>
+    <button class="nav-item" data-page="shop">Boutique</button>
+    <button class="nav-item" data-page="account">Compte</button>
+  </nav>
+
+  <dialog id="summonDialog" class="summon-dialog">
+    <div class="summon-stage" id="summonStage">
+      <div class="stage-bg"><span></span><span></span><span></span></div>
+      <div id="cutIn" class="cut-in hidden"><strong></strong><p></p></div>
+      <div id="summonCards" class="summon-cards"></div>
+      <div class="summon-controls">
+        <button id="revealAllBtn" class="secondary-btn small">Révéler tout</button>
+        <button id="closeSummon" class="primary-btn small hidden">Fermer</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="itemDialog" class="item-dialog"><div id="itemModal" class="modal-card"></div></dialog>
+  <dialog id="ratesDialog" class="item-dialog"><div class="modal-card"><div class="modal-head"><h2>Taux d’obtention</h2><button id="closeRates" class="ghost-btn icon">×</button></div><div id="ratesList"></div></div></dialog>
+  <dialog id="historyDialog" class="item-dialog"><div class="modal-card"><div class="modal-head"><h2>Historique compact</h2><button id="closeHistory" class="ghost-btn icon">×</button></div><div id="historyDialogList" class="history-list"></div></div></dialog>
+
+  <script src="items.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
